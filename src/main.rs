@@ -3,23 +3,17 @@ use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 
 fn main() -> io::Result<()> {
-    // Get the current working directory
-    let current_dir = env::current_dir()?;
-
-    // Specify the relative path to the file
-    let file_path = current_dir.join("one").join("input.txt");
-
     // Open the file in read-only mode
-    let file = File::open(&file_path)?;
-
-    // Create a buffered reader to efficiently read lines
+    let file = File::open("one/input.txt")?;
     let reader = BufReader::new(file);
 
-    // Iterate over the lines in the file
+    let mut sum:i32 = 0;
+
     for (index, line) in reader.lines().enumerate() {
         match line {
             Ok(content) => {
                 println!("Line {}: {} -> {:?}", index + 1, content, filter_first_last_integer(&content));
+                sum = sum + filter_first_last_integer(&content);
             }
             Err(err) => {
                 eprintln!("Error reading line {}: {}", index + 1, err);
@@ -27,15 +21,34 @@ fn main() -> io::Result<()> {
         }
     }
 
+    println!("Total sum: {}", sum);
     Ok(())
 }
 
 fn filter_first_last_integer(input: &String) -> i32 {
+    let mut first_int: Option<u32> = None;
+    let mut last_int: Option<u32> = None;
+    let mut number: String = String::from("");
+
     for char in input.chars() {
         if char.is_numeric() {
-            // found first number.
+            number.push(char);
+            first_int = char.to_digit(10);
+            break;
         }
     }
 
-    return 1;
+    for char in input.chars().rev(){
+        if char.is_numeric() {
+            number.push(char);
+            last_int = char.to_digit(10);
+            break;
+        }
+    }
+
+    if number.is_empty(){
+        return 0;
+    }
+
+    return number.parse::<i32>().unwrap();
 }
