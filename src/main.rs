@@ -19,7 +19,7 @@ fn main() -> io::Result<()> {
     for (index, line) in reader.lines().enumerate() {
         match line {
             Ok(content) => {
-                println!("Line {}: {}", index + 1, content);
+                println!("Line {}: {} -> {:?}", index + 1, content, filter_first_last_integer(&content));
             }
             Err(err) => {
                 eprintln!("Error reading line {}: {}", index + 1, err);
@@ -28,4 +28,14 @@ fn main() -> io::Result<()> {
     }
 
     Ok(())
+}
+
+fn filter_first_last_integer(input: &String) -> i32 {
+    for char in input.chars() {
+        if char.is_numeric() {
+            // found first number.
+        }
+    }
+
+    return 1;
 }
