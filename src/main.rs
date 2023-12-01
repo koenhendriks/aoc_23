@@ -11,7 +11,7 @@ fn main() -> io::Result<()> {
     }
 
     // Open the file in read-only mode
-    let file = File::open("one/input.txt")?;
+    let file = File::open(args[1].to_string())?;
     let reader = BufReader::new(file);
 
     let mut sum:i32 = 0;
@@ -32,14 +32,12 @@ fn main() -> io::Result<()> {
 }
 
 fn filter_first_last_integer(input: &String) -> i32 {
-    let mut first_int: Option<u32> = None;
-    let mut last_int: Option<u32> = None;
     let mut number: String = String::from("");
 
     for char in input.chars() {
         if char.is_numeric() {
             number.push(char);
-            first_int = char.to_digit(10);
+            let _first_int = char.to_digit(10);
             break;
         }
     }
@@ -47,7 +45,7 @@ fn filter_first_last_integer(input: &String) -> i32 {
     for char in input.chars().rev(){
         if char.is_numeric() {
             number.push(char);
-            last_int = char.to_digit(10);
+            let _last_int = char.to_digit(10);
             break;
         }
     }
