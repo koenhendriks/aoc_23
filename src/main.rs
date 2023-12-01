@@ -1,7 +1,15 @@
+use std::env;
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 
 fn main() -> io::Result<()> {
+    let args: Vec<_> = env::args().collect();
+    if args.len() < 2 {
+        println!("Need an txt file to parse.");
+        println!("Usage: aoc23_day_one input.txt");
+        return Ok(())
+    }
+
     // Open the file in read-only mode
     let file = File::open("one/input.txt")?;
     let reader = BufReader::new(file);
@@ -11,7 +19,6 @@ fn main() -> io::Result<()> {
     for (index, line) in reader.lines().enumerate() {
         match line {
             Ok(content) => {
-                println!("Line {}: {} -> {:?}", index + 1, content, filter_first_last_integer(&content));
                 sum = sum + filter_first_last_integer(&content);
             }
             Err(err) => {
@@ -20,7 +27,7 @@ fn main() -> io::Result<()> {
         }
     }
 
-    println!("Total sum: {}", sum);
+    println!("Answer: {}", sum);
     Ok(())
 }
 
